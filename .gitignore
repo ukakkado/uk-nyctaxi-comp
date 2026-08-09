@@ -1,8 +1,40 @@
-raw/*.parquet
-raw/*.csv
+# ---------------------------------------------------------------
+# Source data. Rebuilt by tools/build_domain.py from TLC open data.
+# Never commit trip parquet -- it is ~300MB and freely downloadable.
+# ---------------------------------------------------------------
+raw/
+*.parquet
+*.csv.gz
+
+# ---------------------------------------------------------------
+# Warehouse. Rebuilt by the three tools/build_*.py scripts.
+# ---------------------------------------------------------------
 *.duckdb
 *.duckdb.wal
+*.db
+*.sqlite
+
+# ---------------------------------------------------------------
+# dbt build artefacts
+# ---------------------------------------------------------------
 dbt/target/
 dbt/logs/
 dbt/dbt_packages/
+dbt/.user.yml
+logs/
+target/
+
+# ---------------------------------------------------------------
+# Local tooling
+# ---------------------------------------------------------------
 __pycache__/
+*.py[cod]
+.venv/
+venv/
+.env
+.DS_Store
+.idea/
+.vscode/
+
+# Seed CSVs are project config, not data -- keep them.
+!dbt/seeds/*.csv
