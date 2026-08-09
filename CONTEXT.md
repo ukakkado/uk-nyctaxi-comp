@@ -1,5 +1,9 @@
 # NYC Taxi Analytics — Domain Context
 
+> **Before trusting any number here, read [docs/data-provenance.md](docs/data-provenance.md).**
+> This warehouse mixes real TLC open data with two invented source systems.
+> Every dollar is real; every person is not.
+
 Analytics warehouse for the TLC trip record data. Owned by the Data Platform
 team; consumed by Finance and by the Operations reporting group.
 
