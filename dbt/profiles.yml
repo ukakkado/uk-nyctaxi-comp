@@ -1,0 +1,17 @@
+nyc_taxi_analytics:
+  target: domain
+  outputs:
+    # The Domain Workspace. Complete data. Production target.
+    domain:
+      type: duckdb
+      path: ../domain.duckdb
+      schema: main
+      threads: 8
+
+    # The Agent Cache DB (Slice). Same schema names, different database file,
+    # so every source() and ref() resolves without editing a model.
+    slice:
+      type: duckdb
+      path: ../slice.duckdb
+      schema: main
+      threads: 8

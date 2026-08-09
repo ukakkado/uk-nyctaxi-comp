@@ -1,0 +1,8 @@
+raw/*.parquet
+raw/*.csv
+*.duckdb
+*.duckdb.wal
+dbt/target/
+dbt/logs/
+dbt/dbt_packages/
+__pycache__/
