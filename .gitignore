@@ -38,3 +38,9 @@ venv/
 
 # Seed CSVs are project config, not data -- keep them.
 !dbt/seeds/*.csv
+
+# ---------------------------------------------------------------
+# Operator answer key. Never commit: a session that reads this has
+# been told the answer, and the run measures nothing.
+# ---------------------------------------------------------------
+docs/intents/EVALUATION-NOTES.md
