@@ -28,6 +28,7 @@ consistent, and carrying the imperfections a real feed has.
 ```
 CONTEXT.md                domain context and ubiquitous language
 docs/data-provenance.md   real TLC data vs generated, tier by tier
+docs/intents/             candidate business requests to run through intent capture
 docs/adr/                 architecture decisions
 tools/                    warehouse builders + local profiling instruments
 dbt/models/staging/       20 models, one per source table
