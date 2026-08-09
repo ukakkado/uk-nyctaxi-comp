@@ -3,21 +3,32 @@
 **From:** Priya Raghunathan, Commercial Director
 **To:** Data Platform
 **Date:** 2024-07-08
+**Needed by:** 2024-08-23 (board pack goes out end of August)
 
 ---
 
-Every quarter the board asks me the same question and every quarter I give them
-the same non-answer. We all *know* we're losing airport work to Uber and Lyft.
-Nobody can tell me how much, or whether it's getting worse or levelling off.
+Every quarter the board asks how much airport work we're losing to Uber and
+Lyft, and every quarter I give them the same non-answer. We all know it's
+happening. Nobody can tell them how much, or whether it's getting worse or
+levelling off.
 
-TLC publish the high-volume for-hire data — the app trips — on the same site the
-rest of the trip data comes from. As far as I know we've never brought it in.
+TLC publish the high-volume for-hire records — the app trips — on the same site
+our yellow and green data comes from. We've never brought that feed in.
 
-Can we get it in and put together a view of how our share of airport work has
-moved over the last six months? I want to be able to say something specific:
-this is where we were in January, this is where we are now, this is the
-direction. Ideally split by which airport, because I suspect JFK and LaGuardia
-are behaving completely differently and we're managing them as if they're the
-same thing.
+What I want in the pack:
 
-Board pack goes out end of August so there's time, but not loads.
+- Our airport volume against theirs, over January to June this year.
+- Split by airport. I'm fairly sure JFK and LaGuardia are behaving completely
+  differently and we're managing them as if they're one market.
+- Enough of a time series to say which direction it's moving, not just a
+  snapshot.
+
+Audience is the board, so it needs to survive being argued with, and Ravi in
+particular will ask how the comparison was constructed.
+
+Two things I don't know how to settle and would rather you told me:
+
+- Whether "share" should be counted in trips or in money. Trips feels honest to
+  me, but I can see the argument.
+- Whether this should sit somewhere permanent or is a one-off. My instinct is
+  we'll be asked again every quarter.
