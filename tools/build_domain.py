@@ -32,9 +32,10 @@ for s in ("bronze", "silver", "gold"):
 # Ingestion metadata mirrors what a dlt-style loader stamps on every row.
 # --------------------------------------------------------------------------
 
-def land(table, pattern, load_id):
+def land(table, pattern, load_id, sample_trips=False):
     files = sorted(glob.glob(os.path.join(RAW, pattern)))
     assert files, pattern
+    sample_clause = " USING SAMPLE 1 PERCENT (bernoulli, 20240817)" if sample_trips else ""
     con.execute(
         f"""
         CREATE OR REPLACE TABLE bronze.{table} AS
@@ -42,13 +43,13 @@ def land(table, pattern, load_id):
                '{load_id}'                        AS _load_id,
                regexp_extract(filename, '[^/]+$') AS _source_file,
                TIMESTAMP '2024-07-02 03:14:00'    AS _loaded_at
-        FROM read_parquet('{os.path.join(RAW, pattern)}', filename = true)
+        FROM read_parquet('{os.path.join(RAW, pattern)}', filename = true){sample_clause}
         """
     )
 
 
-land("yellow_tripdata", "yellow_tripdata_2024-*.parquet", "load_2024h1_yellow")
-land("green_tripdata", "green_tripdata_2024-*.parquet", "load_2024h1_green")
+land("yellow_tripdata", "yellow_tripdata_2024-*.parquet", "load_2024h1_yellow", sample_trips=True)
+land("green_tripdata", "green_tripdata_2024-*.parquet", "load_2024h1_green", sample_trips=True)
 
 con.execute(
     f"""
