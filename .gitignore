@@ -15,12 +15,12 @@ raw/
 *.sqlite
 
 # ---------------------------------------------------------------
-# dbt build artefacts
+# Transformation build artefacts
 # ---------------------------------------------------------------
-dbt/target/
-dbt/logs/
-dbt/dbt_packages/
-dbt/.user.yml
+transformation/target/
+transformation/logs/
+transformation/dbt_packages/
+transformation/.user.yml
 logs/
 target/
 
@@ -37,7 +37,7 @@ venv/
 .vscode/
 
 # Seed CSVs are project config, not data -- keep them.
-!dbt/seeds/*.csv
+!transformation/seeds/*.csv
 
 # ---------------------------------------------------------------
 # Operator answer key. Never commit: a session that reads this has

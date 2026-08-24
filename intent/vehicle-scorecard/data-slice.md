@@ -22,7 +22,7 @@ One model, per `intent.md`'s Deliverables inventory:
 `information_schema` / the dbt manifest turned up an existing model already at
 the target grain: `agg.agg_vehicle_monthly` (vehicle x month, built from
 `agg_vehicle_daily` with `fct_maintenance` downtime already netted in — see
-`dbt/models/marts/agg/agg_vehicle_monthly.sql`).
+`transformation/models/marts/agg/agg_vehicle_monthly.sql`).
 
 `mart_driver_scorecard` — the model this scorecard is patterned on — reads a
 single source (`agg_driver_monthly`) with no joins; it derives its ranks and

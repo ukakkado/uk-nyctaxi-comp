@@ -44,7 +44,7 @@ tools/build_domain.py ─────► bronze ─────► silver
                                       dbt docs generate
 ```
 
-`domain.duckdb`, downloaded source files, and dbt artifacts are ignored by Git.
+`domain.duckdb`, downloaded source files, and transformation artifacts are ignored by Git.
 A complete rebuild is reproducible from the scripts and public TLC inputs
 without committing a multi-gigabyte warehouse.
 
@@ -54,10 +54,10 @@ without committing a multi-gigabyte warehouse.
 - `docs/data-provenance.md`: real versus generated data, tier by tier.
 - `docs/adr/`: architecture decisions.
 - `docs/intents/` and `intent/`: candidate business requests and data slices.
-- `dbt/models/staging/`: source-shaped views.
-- `dbt/models/intermediate/`: conformance and hard transformations.
-- `dbt/models/marts/`: core dimensions/facts, aggregates, finance, and operations.
-- `dbt/seeds/`: analyst-owned daypart, distance, duration, and fare bands.
+- `transformation/models/staging/`: source-shaped views.
+- `transformation/models/intermediate/`: conformance and hard transformations.
+- `transformation/models/marts/`: core dimensions/facts, aggregates, finance, and operations.
+- `transformation/seeds/`: analyst-owned daypart, distance, duration, and fare bands.
 - `tools/download_bronze_data.py`: download official TLC inputs.
 - `tools/build_domain.py`: build the Bronze/Silver baseline.
 - `tools/build_mdm.py`: build deterministic MDM source data.
@@ -100,7 +100,7 @@ python3 tools/build_dbt_and_docs.py
 
 `build_dbt_and_docs.py` is the named entry point for the dbt layer: it runs
 `dbt build`, then `dbt docs generate`, and writes the documentation artifacts
-under `dbt/target/`.
+under `transformation/target/`.
 
 ### Individual commands
 
@@ -135,7 +135,7 @@ python3 tools/build_dbt_and_docs.py --target domain --docs-only
 The equivalent direct commands are:
 
 ```bash
-cd dbt
+cd transformation
 DBT_PROFILES_DIR=. dbt build --target domain
 DBT_PROFILES_DIR=. dbt docs generate --target domain
 DBT_PROFILES_DIR=. dbt docs serve --port 8085
@@ -145,7 +145,7 @@ Open <http://localhost:8085> after starting the docs server.
 
 ## dbt targets and model layers
 
-`dbt/profiles.yml` defines `domain` (`../domain.duckdb`) and `slice`
+`transformation/profiles.yml` defines `domain` (`../domain.duckdb`) and `slice`
 (`../slice.duckdb`) targets. The project is organized as:
 
 - **staging**: source-shaped views over `bronze`, `silver`, `ops_raw`, and `mdm_raw`.
@@ -175,8 +175,8 @@ status interval validity, SCD2 zone overlap, and shift-time reconciliation.
 
 ## Important limitations
 
-- Do not commit `domain.duckdb`, Parquet files, CSV downloads, `dbt/target/`, or
-  `dbt/logs/`; they are covered by `.gitignore`.
+- Do not commit `domain.duckdb`, Parquet files, CSV downloads, `transformation/target/`, or
+  `transformation/logs/`; they are covered by `.gitignore`.
 - `ops_raw` driver, vehicle, garage, lease, maintenance, and weather records
   are synthetic and are not real NYC operations.
 - Generated zone coordinates, population, area, demand tiers, and version

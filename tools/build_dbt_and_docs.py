@@ -11,7 +11,7 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
-DBT_DIR = ROOT / "dbt"
+DBT_DIR = ROOT / "transformation"
 
 
 def _run(dbt: str, arguments: list[str], env: dict[str, str]) -> None:
@@ -40,7 +40,7 @@ def main() -> int:
         _run(dbt, ["build", "--target", args.target], env)
     _run(dbt, ["docs", "generate", "--target", args.target], env)
     print(f"\nDocumentation generated under {DBT_DIR / 'target'}")
-    print("Serve it with: cd dbt && DBT_PROFILES_DIR=. dbt docs serve --port 8085")
+    print("Serve it with: cd transformation && DBT_PROFILES_DIR=. dbt docs serve --port 8085")
     return 0
 
 
