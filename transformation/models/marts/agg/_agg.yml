@@ -70,3 +70,30 @@ models:
       Where the fleet spends its time, by zone and hour, from the status stream
       rather than from trips. The gap between this map and the revenue map is the
       whole reason occupancy is collected.
+
+  - name: agg_zone_utilisation_monthly
+    description: >
+      Zone × month utilisation: how much of the time cars spend in each zone is
+      spent actually earning (on a trip) versus sitting idle or on break. Tells
+      Fleet Operations which zones are productive versus dead time.
+    columns:
+      - name: zone_key
+        description: Surrogate key for the zone (current version).
+      - name: month_start_date
+        description: First day of the calendar month.
+      - name: zone_natural_key
+        description: TLC LocationID for the zone.
+      - name: zone_name
+        description: Human-readable zone name.
+      - name: borough_name
+        description: Borough the zone belongs to.
+      - name: total_hours
+        description: Total hours all vehicles spent in this zone this month (all status codes).
+      - name: earning_hours
+        description: Hours spent ON_TRIP (actively carrying a passenger) in this zone this month.
+      - name: idle_hours
+        description: Hours spent AVAILABLE (waiting for dispatch) in this zone this month.
+      - name: break_hours
+        description: Hours spent on BREAK in this zone this month.
+      - name: utilisation_rate
+        description: earning_hours / total_hours. Null when total_hours is zero.
