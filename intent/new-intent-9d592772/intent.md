@@ -64,3 +64,6 @@ DuckDB-local ephemeral workspace, dbt `agg` layer under `transformation/models/m
 ## Approvals
 
 Append-only. `capturing-intent` — not a coordinator — appends `- [x] User approved intent — YYYY-MM-DD HH:MM (UTC)` only after a structured `AskUserQuestion` response whose first-option value was `approved`. Do not append from inference.
+
+- [x] User approved intent — 2026-08-29 15:10 (UTC)
+- [x] User approved design — 2026-08-29 15:10 (UTC)
