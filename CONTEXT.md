@@ -4,19 +4,24 @@
 > This warehouse mixes real TLC open data with two invented source systems.
 > Every dollar is real; every person is not.
 
-Analytics warehouse for the TLC trip record data. Owned by the Data Platform
-team; consumed by Finance and by the Operations reporting group.
+Analytics warehouse for TLC trip-record data. Owned by the Data Platform team;
+consumed by Finance Reporting, Commercial, Fleet Operations, and Data Platform.
 
 ## Layers
 
 | Layer | Contents | Owner |
 | --- | --- | --- |
-| `bronze` | Landed TLC parquet, verbatim. Source column names and types preserved; only `_load_id` / `_source_file` / `_loaded_at` added. | ingestion |
-| `silver` | Conformed. Yellow and green unioned onto one trip grain with shared names. | platform |
-| `gold` | dbt-managed marts. Business rules live here. | platform |
+| `bronze` | Landed TLC Parquet, verbatim. Source column names and types are preserved; only `_load_id`, `_source_file`, and `_loaded_at` are added. | ingestion |
+| `silver` | Conformed TLC data. Yellow and Green are unioned to one trip grain with shared names. | platform |
+| `ops_raw` | Generated fleet operations: garages, vehicles, drivers, leases, shifts, assignments, status events, and maintenance. | operations source builder |
+| `mdm_raw` | Generated and maintained master data: zones, vendors, payment methods, rate plans, calendar, POIs, and weather. | master-data source builder |
+| `staging` | dbt views that shape the four source layers for downstream use. | platform |
+| `intermediate` | dbt tables for trip enrichment, fare components, data-quality flags, status intervals, and shift calculations. | platform |
+| `core`, `agg`, `finance`, `ops` | dbt dimensions, facts, aggregates, and consumer-facing marts. Business rules are applied at the model that needs them. | platform |
 
-Only `gold` is dbt-managed. `bronze` and `silver` are declared to dbt as
-sources and are produced by the loader outside this repo.
+`bronze`, `silver`, `ops_raw`, and `mdm_raw` are dbt sources produced outside
+dbt. dbt manages the `staging`, `intermediate`, `core`, `agg`, `finance`, and
+`ops` model layers.
 
 ## Ubiquitous language
 
@@ -25,11 +30,12 @@ sources and are produced by the loader outside this repo.
 - **Fleet / service type** — `yellow` (medallion) or `green` (boro taxi).
   Green may not pick up passengers in the Manhattan core or at the airports
   except by pre-arrangement, so airport volume is overwhelmingly yellow.
-- **Zone** — one of 265 TLC `LocationID` values. Every trip carries a pickup
-  and a dropoff zone; TLC never emits a null or unknown-to-the-lookup id.
-- **Billable trip** — the finance definition used by every mart in `gold`:
-  `total_amount > 0` within the reporting window. Trips failing this are
-  refunds, voids, and meter errors.
+- **Zone** — one of 265 TLC `LocationID` values. The current loaded data has a
+  non-null, lookup-resolved pickup and dropoff zone for every trip.
+- **Billable trip** — `total_amount > 0` within the reporting window. Finance
+  revenue marts and selected aggregates opt into this definition. `core.fct_trip`
+  retains all trips and exposes `is_billable`, so data-quality and operational
+  models can analyse refunds, voids, and meter errors.
 - **Reporting window** — 2024-01-01 to 2024-07-01, set by `report_start` /
   `report_end` vars. Not a sampling control; changing it changes the numbers
   Finance sees.
@@ -49,8 +55,18 @@ sources and are produced by the loader outside this repo.
 
 ## Consumers
 
-- Finance — `mart_daily_zone_revenue` (daily, in the Monday revenue pack).
-- Operations reporting — `mart_monthly_service_summary` (monthly).
+- Finance Reporting — the Monday revenue pack, backed by
+  `finance.mart_daily_zone_revenue` and `finance.mart_revenue_component_bridge`.
+- Commercial — the concession-negotiation pack, backed by
+  `finance.mart_monthly_service_summary`.
+- Fleet Operations — the garage operations review, backed by
+  `ops.mart_driver_scorecard`, `ops.mart_vehicle_utilisation`, and
+  `agg.agg_garage_monthly`.
+- Data Platform — the data-quality review, backed by
+  `ops.mart_trip_quality_scorecard`.
+
+The aggregate models also support ad-hoc analysis; they are not all bound to a
+declared exposure.
 
 No semantic layer. No orchestration in this repo; the loader and `dbt build`
 are scheduled externally, nightly at 03:00 ET.

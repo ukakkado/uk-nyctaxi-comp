@@ -35,7 +35,7 @@ for s in ("bronze", "silver", "gold"):
 def land(table, pattern, load_id, sample_trips=False):
     files = sorted(glob.glob(os.path.join(RAW, pattern)))
     assert files, pattern
-    sample_clause = " USING SAMPLE 1 PERCENT (bernoulli, 20240817)" if sample_trips else ""
+    sample_clause = " USING SAMPLE 5 PERCENT (bernoulli, 20240817)" if sample_trips else ""
     con.execute(
         f"""
         CREATE OR REPLACE TABLE bronze.{table} AS
