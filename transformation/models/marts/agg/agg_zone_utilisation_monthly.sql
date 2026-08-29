@@ -17,13 +17,13 @@ select
 
     -- Hour buckets by status code
     sum(si.interval_seconds) / 3600.0                                  as total_hours,
-    sum(si.interval_seconds) filter (where si.status_code = 'ON_TRIP') / 3600.0    as earning_hours,
-    sum(si.interval_seconds) filter (where si.status_code = 'AVAILABLE') / 3600.0  as idle_hours,
-    sum(si.interval_seconds) filter (where si.status_code = 'BREAK') / 3600.0      as break_hours,
+    coalesce(sum(si.interval_seconds) filter (where si.status_code = 'ON_TRIP'), 0) / 3600.0    as earning_hours,
+    coalesce(sum(si.interval_seconds) filter (where si.status_code = 'AVAILABLE'), 0) / 3600.0  as idle_hours,
+    coalesce(sum(si.interval_seconds) filter (where si.status_code = 'BREAK'), 0) / 3600.0      as break_hours,
 
     -- Utilisation rate: earning hours / total hours, null when total is zero
     {{ safe_divide(
-        "sum(si.interval_seconds) filter (where si.status_code = 'ON_TRIP')::double",
+        "coalesce(sum(si.interval_seconds) filter (where si.status_code = 'ON_TRIP'), 0)::double",
         "nullif(sum(si.interval_seconds), 0)::double"
     ) }}                                                               as utilisation_rate
 
