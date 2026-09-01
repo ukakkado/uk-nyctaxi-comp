@@ -1,6 +1,6 @@
 # ADR 0003 — Hybrid source for monthly aggregates with distinct counts
 
-**Status:** Decided (2026-08-31)
+**Status:** Accepted (2026-08-31)
 
 ## Context
 
