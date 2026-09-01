@@ -67,4 +67,7 @@ Code reviewer verdict:
 
 ## Approvals
 
+- [x] User approved ship — 2026-08-31 09:15 (UTC)
+- [x] PR created — https://github.com/ukakkado/uk-nyctaxi-comp/pull/1
+
 Append-only. `shipping` — not a coordinator — appends the ship approval here once `## Certification` reads `certified` and its own hard stops clear: `- [x] User approved ship — YYYY-MM-DD HH:MM (UTC)`, from a structured `AskUserQuestion` response whose first-option value was `approved`. Do not append from inference, and never while `## Certification` reads `returned` or `blocked`.
