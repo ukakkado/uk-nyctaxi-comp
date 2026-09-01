@@ -44,3 +44,4 @@ venv/
 # been told the answer, and the run measures nothing.
 # ---------------------------------------------------------------
 docs/intents/EVALUATION-NOTES.md
+ingestion/.dlt/secrets.toml
