@@ -70,3 +70,46 @@ models:
       Where the fleet spends its time, by zone and hour, from the status stream
       rather than from trips. The gap between this map and the revenue map is the
       whole reason occupancy is collected.
+
+  - name: agg_zone_monthly
+    description: >
+      Zone × month utilization: how much of the time vehicles spend in each zone
+      is earning (ON_TRIP) versus idle. The monthly counterpart to
+      agg_zone_occupancy_hourly, matching the cadence of agg_vehicle_monthly and
+      agg_driver_monthly for the Fleet Operations review. Hybrid source (ADR 0003):
+      hours roll up from the hourly aggregate, distinct counts compute from the
+      fact table directly. other_hours captures DISPATCHED, LOGIN, and LOGOUT
+      status time not bucketed by the three named columns.
+    columns:
+      - name: month_start_date
+        description: First day of the month.
+        tests: [not_null]
+      - name: zone_natural_key
+        description: TLC LocationID.
+        tests: [not_null]
+      - name: total_hours
+        description: >
+          Total interval hours in the zone for the month (all statuses).
+      - name: on_trip_hours
+        description: Interval hours where status_code = 'ON_TRIP' (earning time).
+      - name: available_hours
+        description: Interval hours where status_code = 'AVAILABLE' (idle time).
+      - name: break_hours
+        description: Interval hours where status_code = 'BREAK'.
+      - name: other_hours
+        description: >
+          Residual hours: total_hours - on_trip_hours - available_hours - break_hours.
+          Captures DISPATCHED, LOGIN, and LOGOUT status time.
+      - name: distinct_drivers
+        description: Count of distinct drivers active in the zone for the month.
+      - name: distinct_vehicles
+        description: Count of distinct vehicles active in the zone for the month.
+      - name: zone_utilization_rate
+        description: >
+          on_trip_hours / total_hours. The fraction of time vehicles are physically
+          present in the zone that they are earning. Null when total_hours is zero.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - month_start_date
+            - zone_natural_key
