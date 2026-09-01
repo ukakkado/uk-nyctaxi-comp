@@ -72,4 +72,5 @@ None
 ## Approvals
 
 - [x] User approved intent — 2026-08-31 08:57 (UTC)
+- [x] Design approved — 2026-08-31 09:02 (UTC) — design-reviewer APPROVE verdict
 
