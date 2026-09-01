@@ -37,6 +37,7 @@ All acceptance units covered by compile, lakehouse_query validation, and code re
 | lakehouse_query validation | Model SQL executed via lakehouse_query | 0 | pass — 1294 rows, grain unique, hours reconcile, rate correct |
 | Test compile | `dbt compile --select agg_zone_monthly` | 0 | pass — 177 tests found (up from 172) |
 | Sandbox run | `dbt build --select agg_zone_monthly --target dev` | N/A | blocked — profiles.yml paths do not match runtime env vars; validated via lakehouse_query instead |
+| Clean-diff gate | `git push -u origin HEAD` | 0 | pass — removed .user.yml from tracking (already in .gitignore) |
 
 ## Reviewer verdicts
 
